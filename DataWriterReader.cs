@@ -105,7 +105,6 @@ namespace DataManagement
                     ConflictResolutionStrategy.UseLastKnownGood,
                     GoogleCloud);
 #elif UNITY_IOS
-
 #endif
             }
             catch (Exception)

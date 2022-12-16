@@ -1,6 +1,8 @@
 # Unity_Data_Management
 Data Management for Unity, Encrypted (AES), Cloud + File management
 
+Download the files or clone the Repo into your Game Project
+
 To use it in your own Game Project, add this to every header of script that use the data management : 
 
          using DataManagement;

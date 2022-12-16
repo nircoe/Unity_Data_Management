@@ -47,27 +47,16 @@ namespace DataManagement
         
         void SaveGame()
         {
-
             OnSave?.Invoke(ref gameData);
 
             bool success = Social.localUser.authenticated 
                 ? dataWriterReader.CloudSave(gameData) 
                 : dataWriterReader.FileSave(gameData);
+            
             if(!success) 
                 Debug.LogError("Save Data Failed");
         }
-
-        public int GetRecord()
-        {
-            return gameData.record;
-        }
         
-        public void UpdateRecord(int newRecord)
-        {
-            if(newRecord > gameData.record)
-                gameData.record = newRecord;
-        }
-
         void OnApplicationQuit()
         {
             SaveGame();

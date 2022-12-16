@@ -2,9 +2,13 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+#if UNITY_ANDROID
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using GooglePlayGames.BasicApi.SavedGame;
+#elif UNITY_IOS
+
+#endif
 using UnityEngine;
 
 namespace DataManagement

@@ -15,6 +15,7 @@ namespace DataManagement
         
         GameData gameData;
         DataWriterReader dataWriterReader;
+        
         void Awake()
         {
             if(Instance == null) Instance = this;

@@ -25,4 +25,4 @@ Include :
           * class AppleCloudWriterReader - no need to change, inheret from CloudWriterReader
           
           * interface IDataManagement - no need to change, 
-                  every script in your game that will need to write/read game data needs to implement this inteface
+                  every script in your game that will write/read game data needs to implement this inteface

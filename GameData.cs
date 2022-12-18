@@ -1,3 +1,4 @@
+using System;
 using UnityEngine.Serialization;
 
 namespace DataManagement
@@ -17,6 +18,8 @@ namespace DataManagement
         public int currentBackground;
         public int[] myBackgrounds;
 
+        public JsonDateTime lastGiftTime;
+
         public GameData()
         {
             this.coins = 0;
@@ -32,6 +35,24 @@ namespace DataManagement
             this.currentBackground = 0;
             this.myBackgrounds = new int[1];
             this.myBackgrounds[0] = 0;
+
+            this.lastGiftTime = new JsonDateTime(DateTime.UtcNow);
+
+        }
+    }
+    
+    [Serializable]
+    public class JsonDateTime {
+        public long value;
+
+        public JsonDateTime(DateTime dt)
+        {
+            value = dt.ToFileTimeUtc();
+        }
+
+        public DateTime ToDateTime()
+        {
+            return DateTime.FromFileTimeUtc(value);
         }
     }
 }

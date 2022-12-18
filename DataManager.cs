@@ -1,5 +1,7 @@
 using System;
+using Services;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace DataManagement
 {
@@ -15,17 +17,18 @@ namespace DataManagement
         
         GameData gameData;
         DataWriterReader dataWriterReader;
-        
+
         void Awake()
         {
             if(Instance == null) Instance = this;
             else Destroy(gameObject);
             DontDestroyOnLoad(gameObject);
+
+            NewWriterReader();
         }
 
         void Start()
         {
-            dataWriterReader = new DataWriterReader(fileName);
             LoadGame();
         }
 
@@ -36,9 +39,7 @@ namespace DataManagement
         
         void LoadGame()
         {
-            gameData = Social.localUser.authenticated
-                ? dataWriterReader.CloudLoad()
-                : dataWriterReader.FileLoad();
+            gameData = dataWriterReader.Load();
             
             if(gameData == null)
                 NewGame();
@@ -50,17 +51,60 @@ namespace DataManagement
         {
             OnSave?.Invoke(ref gameData);
 
-            bool success = Social.localUser.authenticated 
-                ? dataWriterReader.CloudSave(gameData) 
-                : dataWriterReader.FileSave(gameData);
+            bool success = dataWriterReader.Save(gameData);
             
             if(!success) 
                 Debug.LogError("Save Data Failed");
         }
+
+        #region Save Game Events
         
+        void OnEnable()
+        {
+            SceneManager.activeSceneChanged += SaveGameBetweenScenes;
+        }
+
+        void OnDisable()
+        {
+            SceneManager.activeSceneChanged -= SaveGameBetweenScenes;
+        }
+
+        void SaveGameBetweenScenes(Scene arg0, Scene arg1)
+        {
+            if(arg0.buildIndex != 0) // more scenes if they are don't change any game data
+                SaveGame();
+        }
+        
+        void OnApplicationFocus(bool hasFocus)
+        {
+            if(!hasFocus)
+                SaveGame();
+        }
+
+        void OnApplicationPause(bool pauseStatus)
+        {
+            if(pauseStatus)
+                SaveGame();
+        }
+
         void OnApplicationQuit()
         {
             SaveGame();
+        }
+        
+        #endregion
+
+        void NewWriterReader()
+        {
+            if(Social.localUser.authenticated)
+            {
+                if(Authentication.Instance.Platform == Platform.Google)
+                    dataWriterReader = new GoogleCloudWriterReader(fileName);
+                else
+                    dataWriterReader = new AppleCloudWriterReader(fileName);
+            }
+            else
+                dataWriterReader = new FileWriterReader(fileName);
         }
     }
 }

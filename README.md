@@ -13,7 +13,16 @@ Include :
           
           * class DataManager - no need to change
           
-          * class DataWriterReader - no need to change
+          * class DataWriterReader - no need to change, abstract base class for specific Data Writer-Readers
+          
+          * class FileWriterReader - no need to change, inheret from DataWriterReader
+          
+          * class CloudWriterReader - no need to change, 
+                  abstarct base class for specific Cloud Data Writer-Readers, inheret from DataWriterReader
+          
+          * class GoogleCloudWriterReader - no need to change, inheret from CloudWriterReader
+          
+          * class AppleCloudWriterReader - no need to change, inheret from CloudWriterReader
           
           * interface IDataManagement - no need to change, 
                   every script in your game that will need to write/read game data needs to implement this inteface
